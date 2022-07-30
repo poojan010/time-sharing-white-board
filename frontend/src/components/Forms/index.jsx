@@ -1,5 +1,7 @@
+
 import { toast } from "react-toastify";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import constants from "./constants";
 
@@ -8,7 +10,7 @@ import FormInput from "./FormInput";
 import FormRoomIdInput from "./FormRoomIdInput";
 
 
-const JoinCreateRoom = ({ uuid, setUser, setRoomJoined }) => {
+const Forms = ({ uuid, socket, setUser }) => {
 
     const [name, setName] = useState("");
     const [roomId, setRoomId] = useState(uuid());
@@ -17,32 +19,43 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined }) => {
 
     const genreateUuid = () => setRoomId(uuid())
 
+    const navigate = useNavigate()
+
     const handleCreateSubmit = (e) => {
+
         e.preventDefault();
+
         if (!name) return toast.dark(constants.toastNameError);
 
-        setUser({
+        const roomData = {
+            name,
             roomId,
-            host: true,
             userId: uuid(),
-            userName: name,
+            host: true,
             presenter: true,
-        });
-        setRoomJoined(true);
+        };
+        setUser(roomData);
+        navigate(`/${roomId}`);
+        console.log(roomData);
+        socket.emit("userJoined", roomData);
+
     };
 
     const handleJoinSubmit = (e) => {
         e.preventDefault();
+
         if (!joinName) return toast.dark(constants.toastNameError);
 
-        setUser({
-            host: false,
-            userId: uuid(),
-            presenter: false,
+        const roomData = {
+            name: joinName,
             roomId: joinRoomId,
-            userName: joinName,
-        });
-        setRoomJoined(true);
+            userId: uuid(),
+            host: false,
+            presenter: false,
+        };
+        setUser(roomData);
+        navigate(`/${joinRoomId}`);
+        socket.emit("userJoined", roomData);
     };
 
 
@@ -64,12 +77,12 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined }) => {
                     cardTitle={constants.cardCreateRoom}
                     buttonTitle={constants.buttonCreateRoom}
                 >
-                    <FormInput 
+                    <FormInput
                         value={name}
                         setValue={setName}
                         placeholder={constants.placeholderName}
                     />
-                    <FormRoomIdInput 
+                    <FormRoomIdInput
                         value={roomId}
                         generateUuid={genreateUuid}
                     />
@@ -80,12 +93,12 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined }) => {
                     cardTitle={constants.cardJoinRoom}
                     buttonTitle={constants.buttonJoinRoom}
                 >
-                    <FormInput 
+                    <FormInput
                         value={joinName}
                         setValue={setJoinName}
                         placeholder={constants.placeholderName}
                     />
-                    <FormInput 
+                    <FormInput
                         value={joinRoomId}
                         setValue={setJoinRoomId}
                         placeholder={constants.placeholderRoomId}
@@ -97,4 +110,4 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined }) => {
     );
 };
 
-export default JoinCreateRoom;
+export default Forms;

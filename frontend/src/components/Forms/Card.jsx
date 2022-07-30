@@ -1,9 +1,9 @@
 import React from "react";
 
 
-const Card = ({cardTitle,buttonTitle,onSubmit,children}) => {
+const Card = ({ cardTitle, buttonTitle, onSubmit, children }) => {
 
-    return(
+    return (
         <div className="col-md-5 shadow p-3 mb-5 bg-white rounded border mx-auto">
 
             <h1 className="text-center text-primary mb-5">{cardTitle}</h1>

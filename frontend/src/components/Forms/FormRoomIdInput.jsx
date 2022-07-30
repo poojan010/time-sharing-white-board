@@ -4,18 +4,20 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import constants from "./constants";
 
-const FormRoomIdInput = ({ value,generateUuid }) => {
+const FormRoomIdInput = ({ value, generateUuid }) => {
 
     const toastSuccess = () => toast.success(constants.toastCopy)
 
-    return(
+    return (
         <div className="input-group my-2 border align-items-center">
+
             <input
                 type="text"
                 value={value}
                 readOnly={true}
                 className="form-control border-0 outline-0"
             />
+
             <div className="input-group-append">
                 <button
                     type="button"
@@ -31,6 +33,7 @@ const FormRoomIdInput = ({ value,generateUuid }) => {
                     </button>
                 </CopyToClipboard>
             </div>
+
         </div>
     )
 }

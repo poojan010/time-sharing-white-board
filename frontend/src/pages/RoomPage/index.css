@@ -1,0 +1,12 @@
+.canvas-box {
+    height: 500px;
+}
+
+.button-style {
+    display: "block";
+    position: "absolute";
+    top: 5%;
+    left: 3%;
+    height: 40px;
+    width: 100px;
+}
